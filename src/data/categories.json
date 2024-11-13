@@ -1,0 +1,30 @@
+[
+        
+        {
+            "id": 1,
+            "title": "Burgers",
+            "image": "https://i.postimg.cc/XJWcRv9c/cheeseburger-Deluxe.jpg"
+        },
+        {
+            "id": 2,
+            "title": "Pizzas",
+            "image": "https://i.postimg.cc/bvP362SR/pizza-Marguerita.webp"
+        },
+        {
+            "id": 3,
+            "title": "Fries",
+            "image": "https://i.postimg.cc/xqrPTtrm/papasfritasclasicas.webp"
+        },
+        {
+            "id": 4,
+            "title": "Drinks",
+            "image": "https://i.postimg.cc/LsyvKbfs/cerveza-Rubia.webp"
+        },
+        {
+            "id": 5,
+            "title": "Desserts",
+            "image": "https://i.postimg.cc/GpS75vVc/postres.jpg"
+        }
+        
+    ]
+    

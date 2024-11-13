@@ -1,0 +1,30 @@
+[
+    {
+    "id": 9,
+    "title": "papas rústicas",
+    "shortDescription": "Papas fritas rústicas con piel y especias.",
+    "longDescription": "Nuestras papas rústicas están fritas con su piel para darle un sabor y textura únicos, acompañadas con una mezcla de especias que las hace irresistibles.",
+    "price": 600,
+    "stock": 0,
+    "brand": "Quickbite",
+    "category": "Fries",
+    "discount": 0,
+    "tags": ["rustic", "crispy", "side"],
+    "mainImage": "https://i.postimg.cc/KzwN430S/papas-Rusticas.webp",
+    "quantity": 1
+},
+{
+    "id": 10,
+    "title": "cerveza artesanal rubia",
+    "shortDescription": "Refrescante cerveza artesanal rubia de cuerpo ligero.",
+    "longDescription": "Nuestra cerveza artesanal rubia es perfecta para acompañar cualquier comida. Con un sabor suave y refrescante, es ideal para aquellos que disfrutan de una bebida ligera y llena de sabor.",
+    "price": 800,
+    "stock": 30,
+    "brand": "Quickbite",
+    "category": "Drinks",
+    "discount": 0,
+    "tags": ["beer", "cold", "refreshing"],
+    "mainImage": "https://i.postimg.cc/LsyvKbfs/cerveza-Rubia.webp",
+    "quantity": 2
+}
+]

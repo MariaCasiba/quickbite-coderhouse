@@ -1,0 +1,72 @@
+[
+        {
+        "id": 2,
+        "userId": 2,
+        "createdAt": 1728843630000,
+        "items": [
+            {
+                "id": 9,
+                "title": "papas rústicas",
+                "shortDescription": "Papas fritas rústicas con piel y especias.",
+                "longDescription": "Nuestras papas rústicas están fritas con su piel para darle un sabor y textura únicos, acompañadas con una mezcla de especias que las hace irresistibles.",
+                "price": 600,
+                "stock": 0,
+                "brand": "Quickbite",
+                "category": "Fries",
+                "discount": 0,
+                "tags": ["rustic", "crispy", "side"],
+                "mainImage": "https://i.postimg.cc/KzwN430S/papas-Rusticas.webp",
+                "quantity": 1
+            },
+            {
+                "id": 10,
+                "title": "cerveza artesanal rubia",
+                "shortDescription": "Refrescante cerveza artesanal rubia de cuerpo ligero.",
+                "longDescription": "Nuestra cerveza artesanal rubia es perfecta para acompañar cualquier comida. Con un sabor suave y refrescante, es ideal para aquellos que disfrutan de una bebida ligera y llena de sabor.",
+                "price": 800,
+                "stock": 30,
+                "brand": "Quickbite",
+                "category": "Drinks",
+                "discount": 0,
+                "tags": ["beer", "cold", "refreshing"],
+                "mainImage": "https://i.postimg.cc/LsyvKbfs/cerveza-Rubia.webp",
+                "quantity": 2
+            }
+        ]
+        },
+        {
+        "id": 1,
+        "userId": 2,
+        "createdAt": 1728649230000,
+        "items": [
+            {
+                "id": 11,
+                "title": "limonada fresca",
+                "shortDescription": "Limonada natural, refrescante y con un toque de menta.",
+                "longDescription": "Nuestra limonada fresca está hecha con limones naturales y un toque de menta, creando una bebida refrescante perfecta para acompañar tu comida o disfrutar en cualquier momento.",
+                "price": 500,
+                "stock": 40,
+                "brand": "Quickbite",
+                "category": "Drinks",
+                "discount": 5,
+                "tags": ["lemon", "fresh", "non-alcoholic"],
+                "mainImage": "https://i.postimg.cc/htBHLbW6/cerveza.jpg",
+                "quantity": 2
+            },
+            {
+                "id": 6,
+                "title": "pizza cuatro quesos",
+                "shortDescription": "Pizza con una mezcla de cuatro quesos: mozzarella, gorgonzola, parmesano y ricotta.",
+                "longDescription": "Disfruta de esta cremosa mezcla de quesos que incluye mozzarella, gorgonzola, parmesano y ricotta, horneados sobre una masa crujiente. ¡Ideal para los amantes del queso!",
+                "price": 2500,
+                "stock": 8,
+                "brand": "Quickbite",
+                "category": "Pizzas",
+                "discount": 0,
+                "tags": ["cheese", "vegetarian", "rich"],
+                "mainImage": "https://i.postimg.cc/Wzqnvxyj/pizzacuatroquesos.webp",
+                "quantity": 1
+            }
+        ]
+        }
+    ]
