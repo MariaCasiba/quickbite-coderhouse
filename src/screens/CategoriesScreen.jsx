@@ -1,15 +1,19 @@
-import { StyleSheet, Text, View, FlatList, Image, Pressable, useWindowDimensions } from 'react-native';
-import categories from "../data/categories.json";
+import { StyleSheet, Text, FlatList, Image, Pressable, useWindowDimensions } from 'react-native';
+//import categories from "../data/categories.json";
 import FlatCard from '../components/FlatCard';
 import { colors } from '../global/colors';
 import { useEffect, useState } from 'react';
-
+import { useSelector, useDispatch } from 'react-redux'; // con useDispatch puedo usar el reducer del state. con useSelector selecciono algo del estado global. Dispatch para hacer un cambio
+import { setCategory } from '../features/shop/shopSlice';
 
 const CategoriesScreen = ({navigation}) => {
     const {width, height} = useWindowDimensions()
-    
-
     const [isPortrait, setIsPortrait] = useState(true)
+
+    const categories = useSelector(state => state.shopReducer.value.categories) // traigo las categorias con useSelector, usando el store
+
+    const dispatch = useDispatch()
+
 
     useEffect(()=>{
         if (width>height) {
@@ -22,7 +26,10 @@ const CategoriesScreen = ({navigation}) => {
 
     const renderCategoryItem = ({item, index}) => {
         return (
-                <Pressable onPress={()=>navigation.navigate('Productos', item.title)} >
+                <Pressable onPress={()=> {
+                    dispatch(setCategory(item.title)) // esto es action.payload
+                    navigation.navigate('Productos') 
+                    }}>
 
                 <FlatCard style={
                     index%2==0?

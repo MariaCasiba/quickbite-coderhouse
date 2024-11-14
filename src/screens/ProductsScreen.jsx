@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, View, Text, Image, Pressable } from 'react-native';
-import products from "../data/products.json";
+//import products from "../data/products.json";
 import FlatCard from '../components/FlatCard';
 import NunitoText from '../components/NunitoText';
 import { colors } from '../global/colors';
@@ -7,28 +7,43 @@ import { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Search from '../components/Search';
 import DiscountBadge from '../components/DiscountBadge';
+import { useSelector, useDispatch } from 'react-redux';
+import { setProductId } from '../features/shop/shopSlice';
 
-
-const ProductsScreen = ({ navigation, route }) => {
+const ProductsScreen = ({ navigation }) => {
     const [productsFiltered, setProductsFiltered] = useState([]);
 
     const [search, setSearch] = useState("");
     
-    const category = route.params
-    console.log(route)
+    // const category = route.params
+    const category = useSelector(state => state.shopReducer.value.categorySelected)
+    const productsFilteredByCategory = useSelector(state => state.shopReducer.value.productsFilteredByCategory)
 
+    const dispatch = useDispatch()
+
+    // busqueda
     useEffect(()=>{
-        const productsTempFiltered = products.filter(product => product.category === category);
-        setProductsFiltered(productsTempFiltered)
+        setProductsFiltered(productsFilteredByCategory)
         if (search) {
-            const productsTempSearched = productsTempFiltered.filter(product => product.title.toLowerCase().includes(search.toLowerCase()));
-            setProductsFiltered(productsTempSearched)
+            // buscar productos que coincidan con el título o un tag
+            setProductsFiltered(productsFilteredByCategory.filter(product => {
+                const filterTitle = product.title.toLowerCase().includes(search.toLowerCase())
+                const filterTag = product.tags && product.tags.some(tag => tag.toLowerCase().includes(search.toLowerCase()))
+                
+                return filterTitle || filterTag;
+            }));
+            
+        
         }
-    }, [category, search])
+    }, [search, productsFilteredByCategory])
+
 
     const renderProductItem = ({item})=>{
         return(
-            <Pressable onPress={()=> navigation.navigate("Producto", item.id) }>
+            <Pressable onPress={()=> {
+                dispatch(setProductId(item.id))
+                navigation.navigate("Producto") }
+                }>
             <FlatCard style={styles.productContainer}>
                 <View>
                     <Image 

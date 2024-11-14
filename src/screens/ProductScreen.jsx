@@ -1,23 +1,37 @@
 import { StyleSheet, Text, Pressable, Image, useWindowDimensions, View, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '../global/colors';
-import products from "../data/products.json";
+//import products from "../data/products.json";
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import NunitoText from '../components/NunitoText';
 import DiscountBadge from '../components/DiscountBadge';
 
 
-const ProductScreen = ({ route, navigation }) => {
+const ProductScreen = ({ navigation }) => {
+
+    const {width} = useWindowDimensions();
+    const dispatch = useDispatch()
+
+     //const productId = route.params;
+    const productIdSelected = useSelector(state => state.shopReducer.value.productIdSelected)
+    const products = useSelector(state => state.shopReducer.value.products)
+
+
     const [productFound, setProductFound] = useState({});
 
-    const productId = route.params;
-
-    const {width, height} = useWindowDimensions();
-
-
+    
     useEffect(()=>{
-        setProductFound(products.find(product => product.id === productId))
-    }, [productId])
+        if (productIdSelected) {
+            const product = products.find(product =>  product.id === productIdSelected)
+            setProductFound(product)  
+        }
+    }, [productIdSelected, products])
+
+    if (!productFound) {
+        return <Text>Cargando producto...</Text>;  
+    }
+
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
