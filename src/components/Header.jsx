@@ -8,13 +8,13 @@ const Header = ({subtitle}) => {
 
 
     return (
+        
         <SafeAreaView style={width<=300?styles.headerContainerSmall: styles.headerContainer}>
             <Image 
                 source={{ uri: 'https://i.postimg.cc/gk6hQ9X1/logoquickbite.webp' }} 
                 style={width<=300?styles.logoSmall: styles.logo} 
                 resizeMode="contain" 
             />
-            <NunitoText style={styles.subtitle}>{subtitle}</NunitoText>
         </SafeAreaView>
     )
 }
@@ -24,11 +24,12 @@ export default Header
 const styles = StyleSheet.create({
     headerContainer:{
         maxHeight:300,
-        height: 250,
+        height: 270,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colors.beigeOscuro,
-        padding: 10
+        padding: 10,
+        marginVertical: 18
     },
     headerContainerSmall:{
         maxHeight:150,
@@ -39,8 +40,8 @@ const styles = StyleSheet.create({
         padding: 10
     },
     logo: {
-        width: 220, 
-        height: 220, 
+        width: 200, 
+        height: 200, 
     
     },
     logoSmall: {

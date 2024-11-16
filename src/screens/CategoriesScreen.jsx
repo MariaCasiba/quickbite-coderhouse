@@ -1,16 +1,22 @@
-import { StyleSheet, Text, FlatList, Image, Pressable, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, FlatList, Image, Pressable, useWindowDimensions, ActivityIndicator } from 'react-native';
 //import categories from "../data/categories.json";
 import FlatCard from '../components/FlatCard';
+import Banner from '../components/Banner';
 import { colors } from '../global/colors';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // con useDispatch puedo usar el reducer del state. con useSelector selecciono algo del estado global. Dispatch para hacer un cambio
 import { setCategory } from '../features/shop/shopSlice';
+import { useGetCategoriesQuery } from '../services/shopService';
+
 
 const CategoriesScreen = ({navigation}) => {
     const {width, height} = useWindowDimensions()
+    const isSmallScreen = width <= 360;
     const [isPortrait, setIsPortrait] = useState(true)
 
-    const categories = useSelector(state => state.shopReducer.value.categories) // traigo las categorias con useSelector, usando el store
+    //const categories = useSelector(state => state.shopReducer.value.categories) // traigo las categorias con useSelector, usando el store, del estado global
+    const { data: categories, error, isLoading } = useGetCategoriesQuery()
+
 
     const dispatch = useDispatch()
 
@@ -42,7 +48,7 @@ const CategoriesScreen = ({navigation}) => {
                         style={styles.image}
                         resizeMode='contain'
                     />
-                    <Text style={width>300?styles.categoryTitle: styles.categoryTitleSmall}>{item.title}</Text>
+                    <Text style={isSmallScreen?styles.categoryTitleSmall: styles.categoryTitle}>{item.title}</Text>
                 </FlatCard>
                 </Pressable>
 
@@ -52,13 +58,29 @@ const CategoriesScreen = ({navigation}) => {
 
     return (
         <>
-            <Text style={styles.categoriesScreenTitle}>Nuestras menú:</Text>
-            <FlatList
-                data={categories}
-                keyExtractor={item=> item.id}
-                renderItem={renderCategoryItem}
-                
-            />
+            {
+                isLoading
+                ?
+                <>
+                    <Text style={styles.loadingText}>Cargando categorías...</Text>
+                    <ActivityIndicator size="small" color={colors.marronOscuro} />
+                </>
+                : 
+                error 
+                ?
+                <Text style={styles.categoryError}>Error! No se pudieron cargar las categorías de productos disponibles</Text>
+                :
+                <>
+                <Banner />
+                <Text style={isSmallScreen? styles.categoriesScreenTitleSmall : styles.categoriesScreenTitle}>Hacé tu pedido:</Text>
+                <FlatList
+                    data={categories}
+                    keyExtractor={item=> item.id}
+                    renderItem={renderCategoryItem}
+                    />
+
+                </>
+            }
         </>
     )
 }
@@ -102,5 +124,28 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginVertical: 20,
         color: colors.marronOscuro
+    },
+    categoriesScreenTitleSmall:{
+        fontFamily: 'Gloock',
+        fontSize: 18,
+        textAlign: 'center',
+        marginVertical: 14,
+        color: colors.marronOscuro
+    },
+    categoryError: {
+        fontFamily: 'Gloock',
+        fontSize: 18,
+        textAlign: 'center',
+        margin: 26,
+        color: colors.rojo,
+        padding: 16,
+        backgroundColor: colors.beigeDorado
+    },
+    loadingText:{
+        fontFamily: 'Gloock',
+        fontSize: 16,
+        textAlign: 'center',
+        margin: 26,
+        color: colors.marronOscuro,
     }
 })

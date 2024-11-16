@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View, Text, Image, Pressable } from 'react-native';
+import { FlatList, StyleSheet, View, Text, Image, Pressable, ActivityIndicator } from 'react-native';
 //import products from "../data/products.json";
 import FlatCard from '../components/FlatCard';
 import NunitoText from '../components/NunitoText';
@@ -9,6 +9,7 @@ import Search from '../components/Search';
 import DiscountBadge from '../components/DiscountBadge';
 import { useSelector, useDispatch } from 'react-redux';
 import { setProductId } from '../features/shop/shopSlice';
+import { useGetProductsByCategoryQuery } from '../services/shopService';
 
 const ProductsScreen = ({ navigation }) => {
     const [productsFiltered, setProductsFiltered] = useState([]);
@@ -17,7 +18,10 @@ const ProductsScreen = ({ navigation }) => {
     
     // const category = route.params
     const category = useSelector(state => state.shopReducer.value.categorySelected)
-    const productsFilteredByCategory = useSelector(state => state.shopReducer.value.productsFilteredByCategory)
+
+    //const productsFilteredByCategory = useSelector(state => state.shopReducer.value.productsFilteredByCategory)
+    const {data:productsFilteredByCategory, error, isLoading} = useGetProductsByCategoryQuery(category)
+    
 
     const dispatch = useDispatch()
 
@@ -78,19 +82,35 @@ const ProductsScreen = ({ navigation }) => {
 
     return (
         <>
-            <Pressable onPress={()=>navigation.goBack()}><Icon style={styles.icon} name='arrow-back-ios' size={30}  /></Pressable>
-            <Search setSearch={setSearch} />
-            <Text style={styles.categoryTitle}>{category}</Text>
+            {
+                isLoading 
+                ?
+                <>
+                    <Text style={styles.loadingText}>Cargando productos...</Text>
+                    <ActivityIndicator size="small" color={colors.marronOscuro} />
+ 
+                </>
+                :
+                error
+                ?
+                <Text style={styles.errorText}>Error al cargar productos</Text>
+                :
+                <>
+                    <Pressable onPress={()=>navigation.goBack()}>
+                        <Icon style={styles.icon} name='arrow-back-ios' size={30}  />
+                    </Pressable>
+                    <Search setSearch={setSearch} />
+                    <Text style={styles.categoryTitle}>{category}</Text>
             
-            {productsFiltered.length === 0 ? (
-                <Text>No hay productos</Text>
-            ) : (
-                <FlatList 
-                    data={productsFiltered}
-                    keyExtractor={item=>item.id}
-                    renderItem={renderProductItem}
-                />
-            )}
+                    <FlatList 
+                        data={productsFiltered}
+                        keyExtractor={item=>item.id.toString()}
+                        renderItem={renderProductItem}
+                    />
+                </>
+            }
+            
+            
                 
             
         </>
@@ -159,5 +179,21 @@ const styles = StyleSheet.create({
         color: colors.marronOscuro,
         alignSelf: 'flex-end',
         padding: 5
+    },
+    loadingText:{
+        fontFamily: 'Gloock',
+        fontSize: 16,
+        textAlign: 'center',
+        margin: 26,
+        color: colors.marronOscuro,
+    },
+    errorText:{
+        fontFamily: 'Gloock',
+        fontSize: 18,
+        textAlign: 'center',
+        margin: 26,
+        color: colors.rojo,
+        padding: 16,
+        backgroundColor: colors.beigeDorado
     }
 })
