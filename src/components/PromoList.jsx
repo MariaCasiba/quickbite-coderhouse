@@ -61,13 +61,13 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: colors.blanco,
         borderRadius: 10,
-        marginHorizontal: 1,
+        marginHorizontal: 10,
         padding: 6,
         alignItems: 'center',
         elevation: 2,
         width: '90%', 
-        minWidth: 280,
-        minHeight: 220,
+        minWidth: 250,
+        minHeight: 290,
         justifyContent: 'flex-start',
         overflow: 'hidden'
         
@@ -80,26 +80,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         elevation: 1,
         width: '90%', 
-        minWidth: 260,
-        minHeight: 200,
+        minWidth: 200,
+        minHeight: 180,
         justifyContent: 'flex-start',
         overflow: 'hidden'
         
     },
     image: {
         width: '100%',
-        height: 70,
+        height: 50,
         borderRadius: 10,
     },
     imageSmall: {
         width: '100%',
-        height: 50, 
+        height: 40, 
         borderRadius: 8,
     },
     text: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 'bold',
-        marginTop: 10,
+        marginVertical: 6,
         textAlign: 'center',
         color: colors.negro
     },

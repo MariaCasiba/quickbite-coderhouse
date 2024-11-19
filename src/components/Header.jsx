@@ -1,6 +1,5 @@
 import { StyleSheet, View, Image, useWindowDimensions } from 'react-native';
 import {colors} from "../global/colors.js";
-import NunitoText from './NunitoText.jsx';
 import { SafeAreaView } from 'react-native';
 
 const Header = ({subtitle}) => {
@@ -23,17 +22,17 @@ export default Header
 
 const styles = StyleSheet.create({
     headerContainer:{
-        maxHeight:300,
-        height: 270,
+        maxHeight:200,
+        height: 200,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colors.beigeOscuro,
         padding: 10,
-        marginVertical: 18
+        marginVertical: 12
     },
     headerContainerSmall:{
-        maxHeight:150,
-        height: 80,
+        maxHeight:80,
+        height: 60,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colors.beigeOscuro, 

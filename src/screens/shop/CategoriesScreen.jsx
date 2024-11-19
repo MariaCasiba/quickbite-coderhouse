@@ -1,5 +1,4 @@
 import { StyleSheet, Text, FlatList, Image, Pressable, useWindowDimensions, ActivityIndicator, View } from 'react-native';
-//import categories from "../data/categories.json";
 import FlatCard from '../../components/FlatCard';
 import Banner from '../../components/Banner';
 import { colors } from '../../global/colors';
@@ -8,7 +7,9 @@ import { useSelector, useDispatch } from 'react-redux'; // con useDispatch puedo
 import { setCategory } from '../../features/shop/shopSlice';
 import { useGetCategoriesQuery } from '../../services/shopService';
 import PromoList from '../../components/PromoList';
-
+import { clearUser } from '../../features/auth/authSlice';
+import Toast from 'react-native-toast-message';
+import toastConfig from '../../config/toastConfig';
 
 
 const CategoriesScreen = ({navigation}) => {
@@ -16,9 +17,9 @@ const CategoriesScreen = ({navigation}) => {
     const isSmallScreen = width <= 360;
     const [isPortrait, setIsPortrait] = useState(true)
 
-    //const categories = useSelector(state => state.shopReducer.value.categories) // traigo las categorias con useSelector, usando el store, del estado global
     const { data: categories, error, isLoading } = useGetCategoriesQuery()
-
+    
+    const user = useSelector((state) => state.authReducer.value )
     
     const dispatch = useDispatch()
 
@@ -29,12 +30,20 @@ const CategoriesScreen = ({navigation}) => {
         } else{
             setIsPortrait(true)
         }
-    },
+    }, [width, height])
 
-    [width, height])
-
+    const handleLogout = () => {
+        dispatch(clearUser())
+        Toast.show({
+            type: 'success',
+            text1: 'Sesión cerrada',
+            text2: 'Has salido exitosamente',
+            visibilityTime: 3000,
+            position: 'top',
+        });
+        
+    }
     
-
     const renderCategoryItem = ({item, index}) => {
         return (
                 <Pressable onPress={()=> {
@@ -76,8 +85,12 @@ const CategoriesScreen = ({navigation}) => {
                 <Text style={styles.categoryError}>Error! No se pudieron cargar las categorías de productos disponibles</Text>
                 :
                 <>
-                <PromoList navigation={navigation} />
                 <Banner />
+                <PromoList navigation={navigation} />
+                {user.email && <Text style={styles.greetingText}>¡Hola, {user.email}!</Text>}
+                <Pressable onPress={handleLogout} style={styles.logoutButton}>
+                    <Text style={styles.logoutButtonText}>Cerrar sesión</Text>
+                </Pressable>
                 <Text style={isSmallScreen? styles.categoriesScreenTitleSmall : styles.categoriesScreenTitle}>Hacé tu pedido:</Text>
                 <FlatList
                     data={categories}
@@ -87,6 +100,7 @@ const CategoriesScreen = ({navigation}) => {
 
                 </>
             }
+            <Toast config={toastConfig} />
         </>
     )
 }
@@ -152,5 +166,27 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: 26,
         color: colors.marronOscuro,
+    },
+    greetingText: {
+    
+        fontSize: 18,
+        textAlign: 'right',
+        marginTop: 18,
+        paddingHorizontal: 8,
+        color: colors.negro,
+    },
+    logoutButton: {
+        marginTop: 6,
+        marginHorizontal: 6,
+        paddingHorizontal: 10,
+        backgroundColor: colors.marronOscuro,
+        borderRadius: 8,
+        alignSelf: 'flex-end'
+    },
+    logoutButtonText: {
+        fontSize: 14,
+        color: 'white',
+        padding: 4,
+        
     }
 })

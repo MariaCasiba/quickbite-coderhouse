@@ -6,6 +6,8 @@ import MainNavigator from './src/navigation/MainNavigator';
 //import TabNavigator from './src/navigation/TabNavigator';
 import { store } from './src/app/store';
 import { Provider } from 'react-redux';
+import Toast from 'react-native-toast-message';
+import toastConfig from './src/config/toastConfig';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -31,6 +33,7 @@ export default function App() {
     <Provider store={store}>
       <MainNavigator />
       <StatusBar style="auto" />
+      <Toast config={toastConfig} />
     </Provider>
   );
 }

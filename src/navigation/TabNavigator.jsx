@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 import FontAwsome  from "react-native-vector-icons/FontAwesome";
 
