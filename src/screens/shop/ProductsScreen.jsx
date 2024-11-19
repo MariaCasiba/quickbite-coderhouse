@@ -1,15 +1,15 @@
 import { FlatList, StyleSheet, View, Text, Image, Pressable, ActivityIndicator } from 'react-native';
 //import products from "../data/products.json";
-import FlatCard from '../components/FlatCard';
-import NunitoText from '../components/NunitoText';
-import { colors } from '../global/colors';
+import FlatCard from '../../components/FlatCard';
+import NunitoText from '../../components/NunitoText';
+import { colors } from '../../global/colors';
 import { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Search from '../components/Search';
-import DiscountBadge from '../components/DiscountBadge';
+import Search from '../../components/Search';
+import DiscountBadge from '../../components/DiscountBadge';
 import { useSelector, useDispatch } from 'react-redux';
-import { setProductId } from '../features/shop/shopSlice';
-import { useGetProductsByCategoryQuery } from '../services/shopService';
+import { setProductId } from '../../features/shop/shopSlice';
+import { useGetProductsByCategoryQuery } from '../../services/shopService';
 
 const ProductsScreen = ({ navigation }) => {
     const [productsFiltered, setProductsFiltered] = useState([]);

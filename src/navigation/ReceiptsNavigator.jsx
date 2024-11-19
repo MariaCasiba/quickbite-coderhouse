@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ReceiptScreen from "../screens/ReceiptScreen";
+import { ReceiptScreen } from "../screens";
 import Header from "../components/Header";
 
 const ReceiptsStack = createNativeStackNavigator()
@@ -10,7 +10,7 @@ const ReceiptsNavigator = () => {
             screenOptions={{
                 header: ({route})=><Header subtitle={route.name}/>,            
             }}>
-            <ReceiptsStack.Screen component={ReceiptScreen} name="Recibos" />
+            <ReceiptsStack.Screen component={ReceiptScreen} name="receipts" />
         </ReceiptsStack.Navigator>
     )
 }

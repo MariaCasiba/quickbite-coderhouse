@@ -2,7 +2,8 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import TabNavigator from './src/navigation/TabNavigator';
+import MainNavigator from './src/navigation/MainNavigator';
+//import TabNavigator from './src/navigation/TabNavigator';
 import { store } from './src/app/store';
 import { Provider } from 'react-redux';
 
@@ -28,7 +29,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <TabNavigator />
+      <MainNavigator />
       <StatusBar style="auto" />
     </Provider>
   );

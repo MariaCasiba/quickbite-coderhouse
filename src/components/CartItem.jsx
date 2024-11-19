@@ -18,7 +18,7 @@ const CartItem = ({ item }) => {
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.description}>{item.shortDescription}</Text>
                 <Text style={styles.price}>Precio unitario: ${item.price}</Text>
-                <Text style={styles.quantity}>Cantidad: {item.title}</Text>
+                <Text style={styles.quantity}>Cantidad: {item.quantity}</Text>
                 <Text style={styles.total}>Subtotal: ${item.quantity*item.price}</Text>
                 <Icon name='delete' size={24} color={colors.rojo} style={styles.trashIcon} />
             </View>
@@ -62,3 +62,5 @@ const styles = StyleSheet.create({
         marginRight: 16,
     }
 })
+
+

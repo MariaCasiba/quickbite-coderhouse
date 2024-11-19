@@ -1,12 +1,14 @@
-import { StyleSheet, Text, FlatList, Image, Pressable, useWindowDimensions, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, FlatList, Image, Pressable, useWindowDimensions, ActivityIndicator, View } from 'react-native';
 //import categories from "../data/categories.json";
-import FlatCard from '../components/FlatCard';
-import Banner from '../components/Banner';
-import { colors } from '../global/colors';
+import FlatCard from '../../components/FlatCard';
+import Banner from '../../components/Banner';
+import { colors } from '../../global/colors';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // con useDispatch puedo usar el reducer del state. con useSelector selecciono algo del estado global. Dispatch para hacer un cambio
-import { setCategory } from '../features/shop/shopSlice';
-import { useGetCategoriesQuery } from '../services/shopService';
+import { setCategory } from '../../features/shop/shopSlice';
+import { useGetCategoriesQuery } from '../../services/shopService';
+import PromoList from '../../components/PromoList';
+
 
 
 const CategoriesScreen = ({navigation}) => {
@@ -17,7 +19,7 @@ const CategoriesScreen = ({navigation}) => {
     //const categories = useSelector(state => state.shopReducer.value.categories) // traigo las categorias con useSelector, usando el store, del estado global
     const { data: categories, error, isLoading } = useGetCategoriesQuery()
 
-
+    
     const dispatch = useDispatch()
 
 
@@ -28,7 +30,10 @@ const CategoriesScreen = ({navigation}) => {
             setIsPortrait(true)
         }
     },
-[width, height])
+
+    [width, height])
+
+    
 
     const renderCategoryItem = ({item, index}) => {
         return (
@@ -71,6 +76,7 @@ const CategoriesScreen = ({navigation}) => {
                 <Text style={styles.categoryError}>Error! No se pudieron cargar las categorías de productos disponibles</Text>
                 :
                 <>
+                <PromoList navigation={navigation} />
                 <Banner />
                 <Text style={isSmallScreen? styles.categoriesScreenTitleSmall : styles.categoriesScreenTitle}>Hacé tu pedido:</Text>
                 <FlatList
@@ -94,7 +100,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 30,
         marginVertical:10,
         padding: 20,
-        
         
     },
     image:{

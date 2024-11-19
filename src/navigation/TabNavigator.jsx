@@ -13,14 +13,13 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
     return (
-        <NavigationContainer>
+        
             <Tab.Navigator 
                 initialRouteName="Shop"
                 screenOptions={{
                     headerShown: false,
                     tabBarShowLabel: false,
                     tabBarStyle: styles.tabBar
-
                 }}
             >
                 <Tab.Screen 
@@ -50,7 +49,7 @@ const TabNavigator = () => {
                     />
                 
             </Tab.Navigator> 
-        </NavigationContainer>
+        
     )
 }
 
