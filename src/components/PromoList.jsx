@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         elevation: 2,
         width: '90%', 
-        minWidth: 250,
-        minHeight: 290,
+        minWidth: 260,
+        minHeight: 270,
         justifyContent: 'flex-start',
         overflow: 'hidden'
         
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     },
     image: {
         width: '100%',
-        height: 50,
+        height: 60,
         borderRadius: 10,
     },
     imageSmall: {

@@ -1,18 +1,19 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StyleSheet } from "react-native";
 import FontAwsome  from "react-native-vector-icons/FontAwesome";
-
+import { useSelector } from "react-redux";
 import ShopNavigator from "./ShopNavigator";
 import CartNavigator from "./CartNavigator";
 import ReceiptsNavigator from "./ReceiptsNavigator";
+import ProfileNavigator from "./ProfileNavigator";
 import { colors } from "../global/colors";
 
 const Tab = createBottomTabNavigator();
 
 
 const TabNavigator = () => {
+    const user = useSelector((state) => state.authReducer.value)
     return (
-        
             <Tab.Navigator 
                 initialRouteName="Shop"
                 screenOptions={{
@@ -46,6 +47,17 @@ const TabNavigator = () => {
                         )
                     }}
                     />
+                    {user.token && (
+                    <Tab.Screen 
+                    name="Profile" 
+                    component={ProfileNavigator} 
+                    options={{
+                        tabBarIcon: ({ focused }) => (
+                            <FontAwsome name="user" size={24} color={focused ? colors.marronOscuro : colors.blanco} />
+                        )
+                    }}
+                    />
+                    )}
                 
             </Tab.Navigator> 
         

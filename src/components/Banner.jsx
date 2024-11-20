@@ -10,7 +10,7 @@ const Banner = () => {
     return (
         <Pressable style={width <=360 ? styles.bannerSmall : styles.banner} onPress={() => console.log('Banner Pressed!')}>
             <Icon name="bullhorn" size={width <=360 ? 18 : 24} color="white" /> 
-            <Text style={width <= 360? styles.bannerTextSmall : styles.bannerText}>Hoy: ¡2x1 en cervezas de 19 a 21 hs!</Text>
+            <Text style={width <= 360? styles.bannerTextSmall : styles.bannerText}>Hoy:  ¡2x1 en cervezas de 19 a 21 hs!</Text>
         </Pressable>
     );
 };

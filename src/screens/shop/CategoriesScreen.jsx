@@ -87,10 +87,23 @@ const CategoriesScreen = ({navigation}) => {
                 <>
                 <Banner />
                 <PromoList navigation={navigation} />
-                {user.email && <Text style={styles.greetingText}>¡Hola, {user.email}!</Text>}
-                <Pressable onPress={handleLogout} style={styles.logoutButton}>
-                    <Text style={styles.logoutButtonText}>Cerrar sesión</Text>
-                </Pressable>
+                {user.email && user.token
+                    ?
+                    <Text style={styles.greetingText}>¡Hola, {user.email}!</Text>
+                    :
+                    <Text style={styles.greetingText}>¡Bienvenido!, inicia sesión o regístrate para más beneficios. </Text>
+                }
+                {user.email && user.token
+                    ?
+                    <Pressable onPress={handleLogout} style={styles.logoutButton}>
+                            <Text style={styles.logoutButtonText}>Cerrar sesión</Text>
+                    </Pressable>
+                    :
+                    <Pressable onPress={handleLogout} style={styles.loginButton}>
+                        <Text style={styles.loginButtonText}>Ir al login</Text>
+                    </Pressable>
+                }
+                        
                 <Text style={isSmallScreen? styles.categoriesScreenTitleSmall : styles.categoriesScreenTitle}>Hacé tu pedido:</Text>
                 <FlatList
                     data={categories}
@@ -141,14 +154,14 @@ const styles = StyleSheet.create({
         fontFamily: 'Gloock',
         fontSize: 22,
         textAlign: 'center',
-        marginVertical: 20,
+        marginVertical: 16,
         color: colors.marronOscuro
     },
     categoriesScreenTitleSmall:{
         fontFamily: 'Gloock',
         fontSize: 18,
         textAlign: 'center',
-        marginVertical: 14,
+        marginVertical: 12,
         color: colors.marronOscuro
     },
     categoryError: {
@@ -168,8 +181,7 @@ const styles = StyleSheet.create({
         color: colors.marronOscuro,
     },
     greetingText: {
-    
-        fontSize: 18,
+        fontSize: 16,
         textAlign: 'right',
         marginTop: 18,
         paddingHorizontal: 8,
@@ -188,5 +200,18 @@ const styles = StyleSheet.create({
         color: 'white',
         padding: 4,
         
-    }
+    },
+    loginButton: {
+        marginTop: 6,
+        marginHorizontal: 6,
+        paddingHorizontal: 10,
+        backgroundColor: colors.beigeDorado,
+        borderRadius: 8,
+        alignSelf: 'flex-end',
+    },
+    loginButtonText: {
+        fontSize: 14,
+        color: colors.marronOscuro,
+        padding: 4,
+    },
 })

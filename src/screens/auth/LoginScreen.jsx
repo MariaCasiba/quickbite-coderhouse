@@ -27,10 +27,12 @@ const LoginScreen = ({navigation}) => {
     },[result])
 
     const onsubmit = ()=>{
-        //console.log(email,password)       
+
         triggerLogin({email,password})
     }
 
+    // falta ver yup para las validaciones
+    
     return (
         <>
 
