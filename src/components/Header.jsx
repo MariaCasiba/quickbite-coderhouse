@@ -29,7 +29,7 @@ const Header = ({subtitle}) => {
                 resizeMode="contain" 
             />
             {
-                user &&  <Pressable onPress={onLogout} style={styles.access}><MaterialIcons name="logout" size={16} color={colors.marronOscuro} /></Pressable>
+                user &&  <Pressable onPress={onLogout} style={styles.access}><MaterialIcons name="logout" size={22} color={colors.negro} /></Pressable>
             }
         </SafeAreaView>
     )
@@ -39,8 +39,8 @@ export default Header
 
 const styles = StyleSheet.create({
     headerContainer:{
-        maxHeight:200,
-        height: 200,
+        maxHeight:230,
+        height: 225,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colors.beigeOscuro,
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
         padding: 10
     },
     logo: {
-        width: 200, 
-        height: 200, 
+        width: 180, 
+        height: 180, 
     
     },
     logoSmall: {

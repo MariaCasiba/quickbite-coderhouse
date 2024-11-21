@@ -3,7 +3,7 @@ import FlatCard from '../../components/FlatCard';
 import Banner from '../../components/Banner';
 import { colors } from '../../global/colors';
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux'; // con useDispatch puedo usar el reducer del state. con useSelector selecciono algo del estado global. Dispatch para hacer un cambio
+import { useSelector, useDispatch } from 'react-redux'; 
 import { setCategory } from '../../features/shop/shopSlice';
 import { useGetCategoriesQuery } from '../../services/shopService';
 import PromoList from '../../components/PromoList';
@@ -32,22 +32,11 @@ const CategoriesScreen = ({navigation}) => {
         }
     }, [width, height])
 
-    const handleLogout = () => {
-        dispatch(clearUser())
-        Toast.show({
-            type: 'success',
-            text1: 'Sesión cerrada',
-            text2: 'Has salido exitosamente',
-            visibilityTime: 3000,
-            position: 'top',
-        });
-        
-    }
     
     const renderCategoryItem = ({item, index}) => {
         return (
                 <Pressable onPress={()=> {
-                    dispatch(setCategory(item.title)) // esto es action.payload
+                    dispatch(setCategory(item.title))
                     navigation.navigate('Productos') 
                     }}>
 
@@ -72,6 +61,21 @@ const CategoriesScreen = ({navigation}) => {
 
     return (
         <>
+            {
+    user.email && (
+        <Text style={styles.greetingText}>
+            {user.email === "demo@quickbite.com"
+                ? "¡Bienvenido! Estás navegando como "
+                : "¡Hola "}
+            <Text style={styles.emailText}>
+                {user.email === "demo@quickbite.com"
+                    ? "invitado."
+                    : user.email}
+            </Text>
+            {user.email !== "demo@quickbite.com" && ", bienvenido/a a QuickBite!"}
+        </Text>
+    )
+}
             {
                 isLoading
                 ?
@@ -168,35 +172,14 @@ const styles = StyleSheet.create({
     greetingText: {
         fontSize: 16,
         textAlign: 'center',
-        marginTop: 18,
+        marginVertical: 20,
         paddingHorizontal: 8,
         color: colors.negro,
-    },
-    logoutButton: {
-        marginTop: 6,
-        marginHorizontal: 8,
-        paddingHorizontal: 10,
-        backgroundColor: colors.marronSuave,
-        borderRadius: 8,
-        alignSelf: 'flex-end'
-    },
-    logoutButtonText: {
-        fontSize: 14,
-        color: 'white',
-        padding: 4,
-        
-    },
-    loginButton: {
-        marginVertical: 6,
-        marginHorizontal: 10,
-        paddingHorizontal: 10,
-        backgroundColor: colors.beigeDorado,
-        borderRadius: 8,
-        alignSelf: 'flex-end',
-    },
-    loginButtonText: {
-        fontSize: 14,
-        color: colors.marronOscuro,
-        padding: 4,
-    },
+
+    }, emailText: {
+        fontStyle: 'italic',
+        color: colors.rojo,
+
+    }
+    
 })

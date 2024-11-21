@@ -13,6 +13,7 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
     const user = useSelector((state) => state.authReducer.value)
+
     return (
             <Tab.Navigator 
                 initialRouteName="Shop"
@@ -47,18 +48,18 @@ const TabNavigator = () => {
                         )
                     }}
                     />
-                    
-                <Tab.Screen 
-                    name="Profile" 
-                    component={ProfileNavigator} 
-                    options={{
-                        tabBarIcon: ({ focused }) => (
-                            <FontAwsome name="user" size={24} color={focused ? colors.marronOscuro : colors.blanco} />
-                        )
-                    }}
-                    />
-                    
-                
+
+                    {user.email !== "demo@quickbite.com" && (
+                        <Tab.Screen 
+                            name="Profile" 
+                            component={ProfileNavigator} 
+                            options={{
+                                tabBarIcon: ({focused}) => (
+                                    <FontAwsome name="user" size={24} color={focused ? colors.marronOscuro : colors.blanco} />
+                                )
+                            }}
+                        />
+                    )}
             </Tab.Navigator> 
         
     )
