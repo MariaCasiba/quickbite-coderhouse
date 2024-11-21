@@ -20,7 +20,8 @@ export const authSlice = createSlice({
         clearUser: (state, action) => { // cuando cierra sesión
             state.value.email = null,
             state.value.token = null,
-            state.value.localId = null
+            state.value.localId = "",
+            state.value.profilePicture = ""
         },
         setProfilePicture: (state, action) => {
             state.value.profilePicture = action.payload

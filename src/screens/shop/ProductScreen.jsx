@@ -23,7 +23,7 @@ const ProductScreen = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const user = useSelector(state => state.authReducer.value)
-    console.log("user: ", user)
+    //console.log("user: ", user)
 
     const handleAddToCart = () => {
         if (!user || !user.token) {

@@ -85,25 +85,10 @@ const CategoriesScreen = ({navigation}) => {
                 <Text style={styles.categoryError}>Error! No se pudieron cargar las categorías de productos disponibles</Text>
                 :
                 <>
+                
+
                 <Banner />
                 <PromoList navigation={navigation} />
-                {user.email && user.token
-                    ?
-                    <Text style={styles.greetingText}>¡Hola, {user.email}!</Text>
-                    :
-                    <Text style={styles.greetingText}>¡Bienvenido!, inicia sesión o regístrate para más beneficios. </Text>
-                }
-                {user.email && user.token
-                    ?
-                    <Pressable onPress={handleLogout} style={styles.logoutButton}>
-                            <Text style={styles.logoutButtonText}>Cerrar sesión</Text>
-                    </Pressable>
-                    :
-                    <Pressable onPress={handleLogout} style={styles.loginButton}>
-                        <Text style={styles.loginButtonText}>Ir al login</Text>
-                    </Pressable>
-                }
-                        
                 <Text style={isSmallScreen? styles.categoriesScreenTitleSmall : styles.categoriesScreenTitle}>Hacé tu pedido:</Text>
                 <FlatList
                     data={categories}
@@ -182,16 +167,16 @@ const styles = StyleSheet.create({
     },
     greetingText: {
         fontSize: 16,
-        textAlign: 'right',
+        textAlign: 'center',
         marginTop: 18,
         paddingHorizontal: 8,
         color: colors.negro,
     },
     logoutButton: {
         marginTop: 6,
-        marginHorizontal: 6,
+        marginHorizontal: 8,
         paddingHorizontal: 10,
-        backgroundColor: colors.marronOscuro,
+        backgroundColor: colors.marronSuave,
         borderRadius: 8,
         alignSelf: 'flex-end'
     },
@@ -202,8 +187,8 @@ const styles = StyleSheet.create({
         
     },
     loginButton: {
-        marginTop: 6,
-        marginHorizontal: 6,
+        marginVertical: 6,
+        marginHorizontal: 10,
         paddingHorizontal: 10,
         backgroundColor: colors.beigeDorado,
         borderRadius: 8,

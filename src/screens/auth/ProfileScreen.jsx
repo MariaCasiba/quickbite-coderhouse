@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native'
-import { useState } from 'react'
 import { colors } from '../../global/colors'
 import CameraIcon from '../../components/CameraIcon'
 import { useSelector, useDispatch } from 'react-redux'

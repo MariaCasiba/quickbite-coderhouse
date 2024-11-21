@@ -47,8 +47,8 @@ const TabNavigator = () => {
                         )
                     }}
                     />
-                    {user.token && (
-                    <Tab.Screen 
+                    
+                <Tab.Screen 
                     name="Profile" 
                     component={ProfileNavigator} 
                     options={{
@@ -57,7 +57,7 @@ const TabNavigator = () => {
                         )
                     }}
                     />
-                    )}
+                    
                 
             </Tab.Navigator> 
         

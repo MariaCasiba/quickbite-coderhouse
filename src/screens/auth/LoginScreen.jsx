@@ -5,6 +5,8 @@ import { setUser } from '../../features/auth/authSlice';
 import { useDispatch } from 'react-redux';
 import { useLoginMutation } from '../../services/authService';
 import Header from '../../components/Header';
+import  Icon from 'react-native-vector-icons/MaterialIcons';
+import { insertSession, clearSessions } from '../../db';
 
 const textInputWidth = Dimensions.get('window').width * 0.7
 
@@ -12,22 +14,42 @@ const LoginScreen = ({navigation}) => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [rememberMe, setRememberMe] = useState(false)
+
 
     const dispatch = useDispatch()
 
     const [triggerLogin, result] = useLoginMutation()
 
-    useEffect(()=>{
-        if(result.status==="rejected"){
-            console.log("Error al iniciar sesión", result)
-        }else if(result.status==="fulfilled"){
+
+
+    useEffect(() => {
+        //result?.isSuccess
+        //console.log("Remember me: ", rememberMe)
+            if (result.isSuccess) {
             console.log("Usuario logueado con éxito")
+            console.log(result.data)
             dispatch(setUser(result.data))
-        }
-    },[result])
+            
+            if (rememberMe) {
+                clearSessions().then(() => console.log("sesiones eliminadas")).catch(error => console.log("Error al eliminar las sesiones: ", error))
+                .then (() => 
+                insertSession({
+                email: result.data.email,
+                localId: result.data.localId,
+                token: result.data.idToken
+                })
+                .then(res => console.log("Usuario insertado con éxito",res))
+                .catch(error => console.log("Error al insertar usuario",error))
+    )}
+        
+            }
+        }, [result,rememberMe])
+
+
+    
 
     const onsubmit = ()=>{
-
         triggerLogin({email,password})
     }
 
@@ -53,8 +75,19 @@ const LoginScreen = ({navigation}) => {
                     secureTextEntry
                 />
 
+
             <Pressable style={styles.btn} onPress={onsubmit}><Text style={styles.btnText}>Iniciar sesión</Text></Pressable>
 
+            </View>
+            <View style={styles.rememberMeContainer}>
+                <Text style={styles.rememberMeText}>Mantener la sesión iniciada</Text>
+                {
+                    rememberMe
+                    ?
+                    <Pressable onPress={() => setRememberMe(!rememberMe)}><Icon name="toggle-on" size={48} color={colors.marronOscuro} /></Pressable>
+                    :
+                    <Pressable onPress={() => setRememberMe(!rememberMe)}><Icon name="toggle-off" size={48} color={colors.marronSuave} /></Pressable>
+                }
             </View>
             <View style={styles.footTextContainer}>
                 <Text style={styles.footText}>¿No tienes una cuenta?</Text>
@@ -143,4 +176,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
     
     },
+    rememberMeContainer: {
+        flexDirection: "row",
+        gap: 2,
+        justifyContent: "flex-start",
+        alignItems: "center",
+        marginBottom: 8,
+        marginHorizontal: 20,
+        paddingHorizontal: 12
+    }
 })
