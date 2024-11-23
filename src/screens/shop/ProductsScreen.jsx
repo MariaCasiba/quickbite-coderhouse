@@ -1,5 +1,4 @@
 import { FlatList, StyleSheet, View, Text, Image, Pressable, ActivityIndicator } from 'react-native';
-//import products from "../data/products.json";
 import FlatCard from '../../components/FlatCard';
 import NunitoText from '../../components/NunitoText';
 import { colors } from '../../global/colors';

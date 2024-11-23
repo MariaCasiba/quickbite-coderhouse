@@ -1,3 +1,4 @@
+
 import { createSlice } from "@reduxjs/toolkit";
 
 
@@ -8,20 +9,32 @@ export const authSlice = createSlice({
             email: null,
             token: null,
             localId: "",
-            profilePicture: ""
+            profilePicture: "",
+            firstName: "",
+            lastName: "",
+            address: ""
         }
     },
-    reducers:{ // reducer son funciones que modifican el estado
+    reducers:{ 
         setUser: (state, action) => {
+            console.log(action.payload);
             state.value.email = action.payload.email,
             state.value.token = action.payload.idToken,
             state.value.localId = action.payload.localId
+            state.value.firstName = action.payload.firstName
+            state.value.lastName = action.payload.lastName
+            state.value.address = action.payload.address
+
         },
-        clearUser: (state, action) => { // cuando cierra sesión
+        clearUser: (state, action) => { 
             state.value.email = null,
             state.value.token = null,
             state.value.localId = "",
-            state.value.profilePicture = ""
+            state.value.profilePicture = "",
+            state.value.firstName = "",
+            state.value.lastName = "",
+            state.value.address = ""
+
         },
         setProfilePicture: (state, action) => {
             state.value.profilePicture = action.payload

@@ -1,9 +1,12 @@
+
+
 import { StyleSheet, Text, View, TextInput, Pressable, Dimensions } from 'react-native'
 import { colors } from '../../global/colors'
 import { useState, useEffect } from 'react';
 import { setUser } from '../../features/auth/authSlice';
 import { useDispatch } from 'react-redux';
 import { useLoginMutation } from '../../services/authService';
+import { useGetUserProfileQuery } from '../../services/userService';
 import Header from '../../components/Header';
 import  Icon from 'react-native-vector-icons/MaterialIcons';
 import { insertSession, clearSessions } from '../../db';
@@ -14,6 +17,7 @@ const LoginScreen = ({navigation}) => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
     const [rememberMe, setRememberMe] = useState(false)
 
 
@@ -21,30 +25,52 @@ const LoginScreen = ({navigation}) => {
 
     const [triggerLogin, result] = useLoginMutation()
 
-
+    const { data:  userProfileData, error: userProfileError } = useGetUserProfileQuery(result.data?.localId, {
+        skip: !result.isSuccess
+    })
 
     useEffect(() => {
-        //result?.isSuccess
-        //console.log("Remember me: ", rememberMe)
             if (result.isSuccess) {
             console.log("Usuario logueado con éxito")
-            console.log(result.data)
-            dispatch(setUser(result.data))
+            console.log("result.data: ", result.data)
+
+            const { localId, email, idToken } = result.data
+
             
+            if (userProfileData) {
+                console.log("userProfileData: ", userProfileData)
+
+                dispatch(setUser({
+                    email,
+                    localId,
+                    idToken,
+                    firstName: userProfileData.firstName,
+                    lastName: userProfileData.lastName,
+                    address: userProfileData.address
+                }))
+            }
+            
+
+
+
             if (rememberMe) {
+
                 clearSessions().then(() => console.log("sesiones eliminadas")).catch(error => console.log("Error al eliminar las sesiones: ", error))
                 .then (() => 
                 insertSession({
-                email: result.data.email,
-                localId: result.data.localId,
-                token: result.data.idToken
+                email,
+                localId,
+                token: idToken,
+                firstName: userProfileData.firstName,
+                lastName: userProfileData.lastName,
+                address: userProfileData.address
                 })
                 .then(res => console.log("Usuario insertado con éxito",res))
                 .catch(error => console.log("Error al insertar usuario",error))
     )}
         
             }
-        }, [result,rememberMe])
+        }, [result,rememberMe, userProfileData])
 
 
     

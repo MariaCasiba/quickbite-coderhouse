@@ -61,13 +61,14 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: colors.blanco,
         borderRadius: 10,
-        marginHorizontal: 10,
+        marginHorizontal: 8,
+        marginTop: 10,
         padding: 6,
         alignItems: 'center',
         elevation: 2,
         width: '90%', 
         minWidth: 260,
-        minHeight: 270,
+        minHeight: 250,
         justifyContent: 'flex-start',
         overflow: 'hidden'
         
@@ -76,12 +77,13 @@ const styles = StyleSheet.create({
         backgroundColor: colors.blanco,
         borderRadius: 8,
         marginHorizontal: 4,
+        marginTop: 8,
         padding: 8,
         alignItems: 'center',
         elevation: 1,
         width: '90%', 
-        minWidth: 200,
-        minHeight: 180,
+        minWidth: 250,
+        minHeight: 240,
         justifyContent: 'flex-start',
         overflow: 'hidden'
         
@@ -99,14 +101,14 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         fontWeight: 'bold',
-        marginVertical: 6,
+        marginVertical: 4,
         textAlign: 'center',
         color: colors.negro
     },
     textSmall: {
-        fontSize: 14, 
+        fontSize: 12, 
         fontWeight: 'bold',
-        marginTop: 8,
+        marginTop: 4,
         textAlign: 'center',
         color: colors.negro
 

@@ -7,12 +7,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setCategory } from '../../features/shop/shopSlice';
 import { useGetCategoriesQuery } from '../../services/shopService';
 import PromoList from '../../components/PromoList';
-import { clearUser } from '../../features/auth/authSlice';
 import Toast from 'react-native-toast-message';
 import toastConfig from '../../config/toastConfig';
 
 
 const CategoriesScreen = ({navigation}) => {
+
     const {width, height} = useWindowDimensions()
     const isSmallScreen = width <= 360;
     const [isPortrait, setIsPortrait] = useState(true)
@@ -20,6 +20,7 @@ const CategoriesScreen = ({navigation}) => {
     const { data: categories, error, isLoading } = useGetCategoriesQuery()
     
     const user = useSelector((state) => state.authReducer.value )
+    
     const dispatch = useDispatch()
 
 
@@ -60,33 +61,35 @@ const CategoriesScreen = ({navigation}) => {
     return (
         <>
             {
-    user.email && (
-        <Text style={styles.greetingText}>
-            {user.email === "demo@quickbite.com"
-                ? "¡Bienvenido! Estás navegando como "
-                : "¡Hola "}
-            <Text style={styles.emailText}>
-                {user.email === "demo@quickbite.com"
-                    ? "invitado."
-                    : user.email}
-            </Text>
-            {user.email !== "demo@quickbite.com" && ", bienvenido/a a QuickBite!"}
-        </Text>
-    )
-}
+            user.email && (
+                <Text style={styles.greetingText}>
+                    {user.email === "demo@quickbite.com"
+                        ? "¡Bienvenido! Estás navegando como "
+                        : "¡Hola "}
+                    <Text style={styles.emailText}>
+                        {user.email === "demo@quickbite.com"
+                            ? "invitado."
+                            : user.firstName}
+                    </Text>
+                    {user.email !== "demo@quickbite.com" && ", bienvenido/a a QuickBite!"}
+                </Text>
+                )
+            }
+            
             {
-                isLoading
-                ?
-                <>
-                    <Text style={styles.loadingText}>Cargando categorías...</Text>
-                    <ActivityIndicator size="small" color={colors.marronOscuro} />
-                </>
-                : 
-                error 
-                ?
-                <Text style={styles.categoryError}>Error! No se pudieron cargar las categorías de productos disponibles</Text>
-                :
-                <>
+            isLoading
+            ?
+            <>
+                <Text style={styles.loadingText}>Cargando categorías...</Text>
+                <ActivityIndicator size="small" color={colors.marronOscuro} />
+            </>
+            : 
+            error 
+            ?
+            
+            <Text style={styles.categoryError}>Error! No se pudieron cargar las categorías de productos disponibles</Text>
+            :
+            <>
                 
 
                 <Banner />
@@ -98,7 +101,7 @@ const CategoriesScreen = ({navigation}) => {
                     renderItem={renderCategoryItem}
                     />
 
-                </>
+            </>
             }
             <Toast config={toastConfig} />
         </>
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
     greetingText: {
         fontSize: 16,
         textAlign: 'center',
-        marginVertical: 20,
+        marginVertical: 10,
         paddingHorizontal: 8,
         color: colors.negro,
 

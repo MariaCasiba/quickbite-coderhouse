@@ -9,7 +9,7 @@ import NunitoText from '../../components/NunitoText';
 import DiscountBadge from '../../components/DiscountBadge';
 import { addItem } from '../../features/cart/cartSlice';
 import { useGetProductQuery } from '../../services/shopService';
-import ModalMessage from '../../components/ModalMessage';  // Importa el componente del modal
+import ModalMessage from '../../components/ModalMessage';  
 
 const ProductScreen = ({ navigation }) => {
     const { width } = useWindowDimensions();
@@ -26,7 +26,7 @@ const ProductScreen = ({ navigation }) => {
     
 
     const handleAddToCart = () => {
-        if (user.email === "demo@quickbite.com") {
+        if (!user.email || user.email === "demo@quickbite.com") {
             setModalVisible(true)
         }
         else {
@@ -97,7 +97,7 @@ const ProductScreen = ({ navigation }) => {
             
             <ModalMessage
                 visible={modalVisible}  
-                message={user && user.email ? "¡Producto agregado al carrito!" : "Debes estar logueado para agregar un producto al carrito"}
+                message={user.email !== "demo@quickbite.com" ? "¡Producto agregado al carrito!" : "Debes estar logueado para agregar un producto al carrito"}
                 onClose={() => setModalVisible(false)}  
             />
         </>

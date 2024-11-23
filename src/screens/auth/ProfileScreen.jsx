@@ -6,11 +6,17 @@ import * as ImagePicker from 'expo-image-picker'
 import { setProfilePicture } from '../../features/auth/authSlice'
 import { usePutProfilePictureMutation } from '../../services/userService'
 
+
+
 const ProfileScreen = () => {
 
     const user = useSelector(state => state.authReducer.value.email)
     const image = useSelector(state => state.authReducer.value.profilePicture)
     const localId = useSelector(state => state.authReducer.value.localId)
+    const firstName = useSelector(state => state.authReducer.value.firstName)
+    const lastName = useSelector(state => state.authReducer.value.lastName)
+    const address = useSelector(state => state.authReducer.value.address)
+
 
     const dispatch = useDispatch()
 
@@ -53,12 +59,18 @@ const ProfileScreen = () => {
                         <Image source={{ uri: image }} resizeMode='cover' style={styles.profileImage} />
                         :
                         <Text style={styles.textProfilePlaceHolder}>{user.charAt(0).toUpperCase()}</Text>
+                        
                 }
                 <Pressable onPress={pickImage} style={({ pressed }) => [{ opacity: pressed ? 0.90 : 1 }, styles.cameraIcon]} >
                     <CameraIcon /> 
                 </Pressable>
             </View>
-            <Text style={styles.profileData}>Email: {user}</Text>
+            <View>
+                <Text style={styles.profileData}>Email: {user}</Text>
+                <Text style={styles.profileData}>Nombre: {firstName} {lastName}</Text>
+                <Text style={styles.profileData}>Dirección: {address}</Text>
+            </View>
+            
         </View>
     )
 }
@@ -78,7 +90,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.marronOscuro,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 14,
+        marginBottom: 20,
         position: 'relative'
 
     },
@@ -86,7 +98,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Gloock',
         fontSize: 22,
         textAlign: 'center',
-        marginVertical: 16,
+        marginBottom: 20,
         color: colors.marronOscuro,
     },
     textProfilePlaceHolder: {
@@ -94,8 +106,9 @@ const styles = StyleSheet.create({
         fontSize: 48,
     },
     profileData: {
-        paddingVertical: 16,
-        fontSize: 16
+        paddingVertical: 8,
+        fontSize: 16,
+        color: colors.marronOscuro
     },
     cameraIcon: {
         position: 'absolute',

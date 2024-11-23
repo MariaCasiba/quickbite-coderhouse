@@ -22,10 +22,10 @@ const Header = ({subtitle}) => {
 
     return (
         
-        <SafeAreaView style={width<=300?styles.headerContainerSmall: styles.headerContainer}>
+        <SafeAreaView style={width<=360?styles.headerContainerSmall: styles.headerContainer}>
             <Image 
                 source={{ uri: 'https://i.postimg.cc/gk6hQ9X1/logoquickbite.webp' }} 
-                style={width<=300?styles.logoSmall: styles.logo} 
+                style={width<=360?styles.logoSmall: styles.logo} 
                 resizeMode="contain" 
             />
             {
@@ -48,12 +48,13 @@ const styles = StyleSheet.create({
         marginVertical: 12
     },
     headerContainerSmall:{
-        maxHeight:80,
-        height: 60,
+        maxHeight:200,
+        height: 170,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colors.beigeOscuro, 
-        padding: 10
+        padding: 10,
+        marginVertical: 10
     },
     logo: {
         width: 180, 
@@ -61,8 +62,8 @@ const styles = StyleSheet.create({
     
     },
     logoSmall: {
-        width: 60, 
-        height: 60, 
+        width: 130, 
+        height: 130, 
     },
     access:{
         alignSelf: "flex-end",
