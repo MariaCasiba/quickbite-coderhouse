@@ -1,4 +1,4 @@
-
+/*
 import { StyleSheet, Text, TextInput, View, Pressable, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -168,11 +168,10 @@ const styles = StyleSheet.create({
     },
 
 })
+*/
 
-
-/*
-import { StyleSheet, Text, TextInput, View, Pressable, Dimensions } from 'react-native'
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, TextInput, View, Pressable, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { colors } from '../../global/colors';
 import Header from '../../components/Header';
@@ -181,27 +180,20 @@ import { setUser } from '../../features/auth/authSlice';
 
 const textInputWidth = Dimensions.get('window').width * 0.8;
 
-const SignupScreen = () => {
+const SignupScreen = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [error, setError] = useState(""); // Estado para los errores
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [address, setAddress] = useState("");
 
     const [triggerSignup, result] = useSignupMutation();
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (result.status === "rejected") {
-            const errorCode = result.error.data?.error?.message || "UNKNOWN_ERROR";
-            
-            switch (errorCode) {
-                case "EMAIL_EXISTS":
-                    setError("Este email ya está registrado.");
-                    break;
-                default:
-                    setError("Ocurrió un error al registrarse. Por favor, intenta nuevamente.");
-                    break;
-            }
+            console.log("Error. No se pudo agregar el usuario", result?.error?.data?.error);
         } else if (result.status === "fulfilled") {
             console.log("Usuario agregado con éxito");
             dispatch(setUser(result.data));
@@ -209,15 +201,23 @@ const SignupScreen = () => {
     }, [result]);
 
     const onsubmit = () => {
-        console.log("email y password: ", email, password, confirmPassword);
-
         if (password !== confirmPassword) {
-            setError("Error: Las contraseñas no coinciden");
+            console.log("Error: Las contraseñas no coinciden");
             return;
         }
 
-        setError(""); // Limpiar errores previos
-        triggerSignup({ email, password });
+        if (!email || !password || !confirmPassword || !firstName || !lastName || !address) {
+            console.log("Todos los campos son obligatorios.");
+            return;
+        }
+
+        triggerSignup({
+            email,
+            password,
+            firstName,
+            lastName,
+            address
+        });
     };
 
     return (
@@ -225,28 +225,45 @@ const SignupScreen = () => {
             <Header />
             <Text style={styles.signUpScreenTitle}>Regístrate</Text>
             <View style={styles.inputContainer}>
-                <TextInput
+                <TextInput 
                     onChangeText={(text) => setEmail(text)}
                     placeholderTextColor={colors.beigeClaro}
                     placeholder='Email'
                     style={styles.textInput}
                 />
-                <TextInput
+                <TextInput 
                     onChangeText={(text) => setPassword(text)}
                     placeholderTextColor={colors.beigeClaro}
                     placeholder='Password'
                     style={styles.textInput}
                     secureTextEntry
                 />
-                <TextInput
+                <TextInput 
                     onChangeText={(text) => setConfirmPassword(text)}
                     placeholderTextColor={colors.beigeClaro}
                     placeholder='Repetir password'
                     style={styles.textInput}
                     secureTextEntry
                 />
+                <TextInput 
+                    onChangeText={(text) => setFirstName(text)}
+                    placeholderTextColor={colors.beigeClaro}
+                    placeholder='Nombre'
+                    style={styles.textInput}
+                />
+                <TextInput 
+                    onChangeText={(text) => setLastName(text)}
+                    placeholderTextColor={colors.beigeClaro}
+                    placeholder='Apellido'
+                    style={styles.textInput}
+                />
+                <TextInput 
+                    onChangeText={(text) => setAddress(text)}
+                    placeholderTextColor={colors.beigeClaro}
+                    placeholder='Dirección'
+                    style={styles.textInput}
+                />
             </View>
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
             <Pressable style={styles.btn} onPress={onsubmit}>
                 <Text style={styles.btnText}>Crear cuenta</Text>
             </Pressable>
@@ -254,13 +271,6 @@ const SignupScreen = () => {
                 <Text style={styles.footText}>¿Ya tienes cuenta?:</Text>
                 <Pressable onPress={() => navigation.navigate('Login')}>
                     <Text style={styles.footTextColor}>Iniciar sesión</Text>
-                </Pressable>
-            </View>
-
-            <View style={styles.guestOptionContainer}>
-                <Text style={styles.footText}>Si prefieres entrar como invitado:</Text>
-                <Pressable onPress={() => dispatch(setUser({ email: "demo@quickbite.com", token: "demo" }))}>
-                    <Text style={styles.footTextColor}>Entrar</Text>
                 </Pressable>
             </View>
         </>
@@ -291,11 +301,20 @@ const styles = StyleSheet.create({
         width: textInputWidth,
         color: colors.blanco,
     },
-    errorText: {
-        color: colors.rojo,
-        fontSize: 14,
-        marginTop: 8,
-        textAlign: 'center',
+    btn: {
+        width: '60%',
+        alignSelf: 'center',
+        padding: 16,
+        paddingHorizontal: 32,
+        backgroundColor: colors.marronSuave,
+        borderRadius: 16,
+        marginTop: 18
+    },
+    btnText: {
+        color: colors.blanco,
+        fontSize: 16,
+        fontWeight: '700',
+        textAlign: 'center'
     },
     footTextContainer: {
         marginTop: 16,
@@ -318,25 +337,5 @@ const styles = StyleSheet.create({
         color: colors.rojo,
         textDecorationLine: 'underline'
     },
-    btn: {
-        width: '60%',
-        alignSelf: 'center',
-        padding: 16,
-        paddingHorizontal: 32,
-        backgroundColor: colors.marronSuave,
-        borderRadius: 16,
-        marginTop: 18
-    },
-    btnText: {
-        color: colors.blanco,
-        fontSize: 16,
-        fontWeight: '700',
-        textAlign: 'center'
-    },
-    guestOptionContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: 12,
-    },
 });
-*/
+

@@ -20,7 +20,6 @@ const CategoriesScreen = ({navigation}) => {
     const { data: categories, error, isLoading } = useGetCategoriesQuery()
     
     const user = useSelector((state) => state.authReducer.value )
-    
     const dispatch = useDispatch()
 
 
@@ -57,7 +56,6 @@ const CategoriesScreen = ({navigation}) => {
 
         )
     }
-
 
     return (
         <>

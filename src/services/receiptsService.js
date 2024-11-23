@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-//import { base_url } from "../firebase/database";
 
 export const receiptApi = createApi({
     reducerPath: "receiptApi",
@@ -13,12 +12,22 @@ export const receiptApi = createApi({
             }),
         }),
         getReceipts: builder.query({
-            query: () => 'receipts.json',
+            query: (userId) => ({
+                url: 'receipts.json',
+                params: {
+                    userId: userId
+                }
+            }), 
             transformResponse: (response) => {
-                return response? Object.values(response): [] 
-            }
-        })
+                return response
+                ? Object.entries(response).map(([key, value]) => ({
+                    id: key,
+                    ...value,
+                }))
+                : [] ;
+            },
         }),
-})
+    }),
+});
 
 export const { usePostReceiptMutation, useGetReceiptsQuery } = receiptApi

@@ -23,10 +23,10 @@ const ProductScreen = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const user = useSelector(state => state.authReducer.value)
-    //console.log("user: ", user)
+    
 
     const handleAddToCart = () => {
-        if (!user || !user.token) {
+        if (user.email === "demo@quickbite.com") {
             setModalVisible(true)
         }
         else {
@@ -97,7 +97,7 @@ const ProductScreen = ({ navigation }) => {
             
             <ModalMessage
                 visible={modalVisible}  
-                message={user && user.token ? "¡Producto agregado al carrito!" : "Debes estar logueado para agregar un producto al carrito"}
+                message={user && user.email ? "¡Producto agregado al carrito!" : "Debes estar logueado para agregar un producto al carrito"}
                 onClose={() => setModalVisible(false)}  
             />
         </>

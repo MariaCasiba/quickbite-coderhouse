@@ -1,12 +1,20 @@
 
+
 import { FlatList, StyleSheet, Text, View, Pressable, ActivityIndicator } from 'react-native';
 import { colors } from '../../global/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import FlatCard from '../../components/FlatCard';
 import { useGetReceiptsQuery } from '../../services/receiptsService';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 const ReceiptScreen = ({ navigation }) => {
     const { data: receipts = [], isLoading, error } = useGetReceiptsQuery();
+
+    const user = useSelector((state) => state.authReducer.value)
+
+    const userReceipts = receipts.filter((receipt) => receipt.userId === user.email)
+    
 
 
     const renderReceiptItem = ({ item }) => {
@@ -33,6 +41,7 @@ const ReceiptScreen = ({ navigation }) => {
                 <Text style={styles.date}>Creado el {new Date(item.createdAt).toLocaleString('es-Ar', dateOptions)} hs. </Text>
                 <Text style={styles.total}>Total: ${total}</Text>
                 <Icon name='visibility' size={24} color={colors.beigeOscuro} style={styles.viewIcon} />
+                
             </FlatCard>
         );
     };
@@ -47,23 +56,32 @@ const ReceiptScreen = ({ navigation }) => {
                             <ActivityIndicator size="small" color={colors.marronOscuro} />
                         </>
                     )
-                    : error
-                        ? (
+                    : 
+                    error
+                    ? 
+                        (
                             <Text style={styles.errorText}>Error al cargar recibos</Text>
                         )
-                        : (
+                    :
+                    userReceipts.length === 0 
+                    ?
+                        (
+                            <Text style={styles.emptyText}>No tienes recibos disponibles</Text>
+                        )
+                    :    
+                        (
                             <>
                                 <Pressable onPress={() => navigation.goBack()}>
                                     <Icon style={styles.icon} name="arrow-back-ios" size={30} />
                                 </Pressable>
                                 <FlatList
-                                    data={receipts}
+                                    data={userReceipts}
                                     keyExtractor={(item) => `${item.createdAt}`}
                                     renderItem={renderReceiptItem}
                                 />
                             </>
                         )
-            }
+                    }
         </View>
     );
 };
@@ -107,9 +125,17 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: colors.beigeDorado,
     },
+    emptyText: {
+        fontFamily: 'Gloock',
+        fontSize: 16,
+        textAlign: 'center',
+        margin: 26,
+        color: colors.gray,
+    },
     icon: {
         color: colors.marronOscuro,
         alignSelf: 'flex-start',
         padding: 10,
     }
 });
+

@@ -1,10 +1,19 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import FlatCard from './FlatCard';
 import { colors } from '../global/colors';
+import { useDispatch } from 'react-redux';
+import { removeItem } from '../features/cart/cartSlice';
 
 
 const CartItem = ({ item }) => {
+
+    const dispatch = useDispatch()
+
+    const handleRemove = () => {
+        dispatch(removeItem({ id: item.id }))
+    }
+
     return (
         <FlatCard style={styles.cartContainer}>
             <View>
@@ -20,7 +29,9 @@ const CartItem = ({ item }) => {
                 <Text style={styles.price}>Precio unitario: ${item.price}</Text>
                 <Text style={styles.quantity}>Cantidad: {item.quantity}</Text>
                 <Text style={styles.total}>Subtotal: ${item.quantity*item.price}</Text>
-                <Icon name='delete' size={24} color={colors.rojo} style={styles.trashIcon} />
+                <Pressable onPress={handleRemove}> 
+                    <Icon name='delete' size={24} color={colors.rojo} style={styles.trashIcon} />
+                </Pressable>           
             </View>
         </FlatCard>
     )
