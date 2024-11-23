@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '../global/colors';
-import { useSelector } from 'react-redux';
 
 const CameraIcon = () => {
     return (

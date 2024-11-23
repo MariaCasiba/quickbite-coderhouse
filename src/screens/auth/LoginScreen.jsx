@@ -1,5 +1,3 @@
-
-
 import { StyleSheet, Text, View, TextInput, Pressable, Dimensions } from 'react-native'
 import { colors } from '../../global/colors'
 import { useState, useEffect } from 'react';
@@ -10,6 +8,8 @@ import { useGetUserProfileQuery } from '../../services/userService';
 import Header from '../../components/Header';
 import  Icon from 'react-native-vector-icons/MaterialIcons';
 import { insertSession, clearSessions } from '../../db';
+import Toast from 'react-native-toast-message';
+
 
 const textInputWidth = Dimensions.get('window').width * 0.7
 
@@ -31,14 +31,11 @@ const LoginScreen = ({navigation}) => {
 
     useEffect(() => {
             if (result.isSuccess) {
-            console.log("Usuario logueado con éxito")
-            console.log("result.data: ", result.data)
 
             const { localId, email, idToken } = result.data
 
             
             if (userProfileData) {
-                console.log("userProfileData: ", userProfileData)
 
                 dispatch(setUser({
                     email,
@@ -50,8 +47,6 @@ const LoginScreen = ({navigation}) => {
                 }))
             }
             
-
-
 
             if (rememberMe) {
 
@@ -67,23 +62,29 @@ const LoginScreen = ({navigation}) => {
                 })
                 .then(res => console.log("Usuario insertado con éxito",res))
                 .catch(error => console.log("Error al insertar usuario",error))
-    )}
+                )}
         
             }
-        }, [result,rememberMe, userProfileData])
+        
+        if (result.isError) {
+            console.log("Error al iniciar sesión", result?.error?.data?.error);
+            Toast.show({
+                type: 'error',
+                position: 'bottom',
+                text1: 'Error al iniciar sesión',
+                text2: 'Correo electrónico o contraseña incorrectos. Intenta nuevamente.',
+            });
+        }
+    }, [result, rememberMe, userProfileData]);
 
-
-    
 
     const onsubmit = ()=>{
         triggerLogin({email,password})
     }
 
-    // falta ver yup para las validaciones
     
     return (
         <>
-
             <Header />
             <Text style={styles.loginScreenTitle}>Loguéate</Text>
             <View style={styles.inputContainer}>
@@ -128,8 +129,8 @@ const LoginScreen = ({navigation}) => {
                     <Text style={styles.footTextColor}>Entrar</Text>
                 </Pressable>
             </View>
+            <Toast />
         </>
-            
 
     )
 }
@@ -212,3 +213,4 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12
     }
 })
+

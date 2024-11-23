@@ -1,5 +1,3 @@
-
-
 import { StyleSheet, Text, TextInput, View, Pressable, Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -209,4 +207,3 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline'
     },
 });
-

@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image, useWindowDimensions, Pressable } from 'react-native';
+import { StyleSheet, Image, useWindowDimensions, Pressable } from 'react-native';
 import {colors} from "../global/colors.js";
 import { SafeAreaView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,7 +7,7 @@ import { clearUser } from '../features/auth/authSlice.js';
 import { clearSessions } from '../db/index.js';
 
 const Header = ({subtitle}) => {
-    const {width, height} = useWindowDimensions();
+    const {width} = useWindowDimensions();
     
     const user = useSelector(state => state.authReducer.value.email)
     const dispatch = useDispatch()

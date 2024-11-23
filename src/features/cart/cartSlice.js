@@ -1,4 +1,3 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 import { calculate_total_price } from "../../utils/functions";
 
