@@ -67,7 +67,8 @@ __Redux Toolkit__: Para la gestión del estado de la aplicación.
   "react-redux": "^9.1.2",
   "expo-image-picker": "~15.0.7",
   "expo-location": "~17.0.1",
-  "expo-sqlite": "~14.0.6"
+  "expo-sqlite": "~14.0.6",
+  
 }
 
 ### Scripts

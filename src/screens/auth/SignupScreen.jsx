@@ -6,7 +6,7 @@ import Header from '../../components/Header';
 import { useSignupMutation } from '../../services/authService';
 import { usePutUserProfileMutation } from '../../services/userService';
 import { setUser } from '../../features/auth/authSlice';
-import Toast from 'react-native-toast-message';
+import { validationSchema } from '../../validations/validationSchema';
 
 
 const textInputWidth = Dimensions.get('window').width * 0.8;
@@ -19,6 +19,16 @@ const SignupScreen = ({ navigation }) => {
     const [lastName, setLastName] = useState("");
     const [address, setAddress] = useState("");
 
+    const [errorEmail, setErrorEmail] = useState("");
+    const [errorPassword, setErrorPassword] = useState("");
+    const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
+    const [errorFirstName, setErrorFirstName] = useState("");
+    const [errorLastName, setErrorLastName] = useState("");
+    const [errorAddress, setErrorAddress] = useState("");
+    const [genericValidationError, setGenericValidationError] = useState("")
+    const [errorAddUser, setErrorAddUser] = useState("")
+ 
+
     const [triggerSignup, result] = useSignupMutation();
     const [triggerPutUserProfile] = usePutUserProfileMutation();
     const dispatch = useDispatch();
@@ -27,19 +37,17 @@ const SignupScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (result.status === "rejected") {
-            console.log("Error. No se pudo agregar el usuario", result?.error?.data?.error);
+            console.log("Error. No se pudo agregar el usuario", result);
+            setErrorAddUser("No se pudo agregar el usuario. Intente nuevamente")
 
-            Toast.show({
-                type: 'error',
-                position: 'bottom',
-                text1: 'Error al registrar',
-                text2: 'Hubo un problema al crear tu cuenta. Intenta nuevamente.',
-            });
+
 
         } else if (result.status === "fulfilled") {
-            console.log("Usuario agregado con éxito, result.data:" , result.data);
+            console.log("Usuario agregado con éxito");
+        
 
             const { localId } = result.data;
+
 
             triggerPutUserProfile({
                 localId,
@@ -57,33 +65,58 @@ const SignupScreen = ({ navigation }) => {
                 address,
             }));
             
-            
-
-            setTimeout(() => {
-                navigation.navigate('Login');
-            }, 2000); 
         }
 
     }, [result, dispatch, firstName, lastName, address, triggerPutUserProfile]);
 
     const onsubmit = () => {
-        if (password !== confirmPassword) {
-            console.log("Error: Las contraseñas no coinciden");
-            return;
+
+        try {
+            validationSchema.validateSync({ email, password, confirmPassword,firstName, lastName,address })
+            setErrorEmail("")
+            setErrorPassword("")
+            setErrorConfirmPassword("")
+            setErrorFirstName("")
+            setErrorLastName("")
+            setErrorAddress("")
+            triggerSignup({
+                email,
+                password,
+                firstName,
+                lastName,
+                address
+            });
+            
+        } catch (error) {
+            switch (error.path) {
+                case "email":
+                    setErrorEmail(error.message)
+                    break
+                case "password":
+                    setErrorPassword(error.message)
+                    break
+                case "confirmPassword":
+                    setErrorConfirmPassword(error.message)
+                    break
+                case "firstName":
+                    setErrorFirstName(error.message)
+                    break 
+                case "lastName":
+                    setErrorLastName(error.message)
+                    break   
+                case "address":
+                    setErrorAddress(error.message)
+                    break 
+                default:
+                    setGenericValidationError(error.message)
+                    break
+                
+            }
+            
         }
 
-        if (!email || !password || !confirmPassword || !firstName || !lastName || !address) {
-            console.log("Todos los campos son obligatorios.");
-            return;
-        }
 
-        triggerSignup({
-            email,
-            password,
-            firstName,
-            lastName,
-            address
-        });
+
     };
 
     return (
@@ -91,31 +124,14 @@ const SignupScreen = ({ navigation }) => {
             <Header />
             <Text style={styles.signUpScreenTitle}>Regístrate</Text>
             <View style={styles.inputContainer}>
-                
-                <TextInput 
-                    onChangeText={(text) => setFirstName(text)}
-                    placeholderTextColor={colors.beigeClaro}
-                    placeholder='Nombre'
-                    style={styles.textInput}
-                />
-                <TextInput 
-                    onChangeText={(text) => setLastName(text)}
-                    placeholderTextColor={colors.beigeClaro}
-                    placeholder='Apellido'
-                    style={styles.textInput}
-                />
-                <TextInput 
-                    onChangeText={(text) => setAddress(text)}
-                    placeholderTextColor={colors.beigeClaro}
-                    placeholder='Dirección'
-                    style={styles.textInput}
-                />
+
                 <TextInput 
                     onChangeText={(text) => setEmail(text)}
                     placeholderTextColor={colors.beigeClaro}
                     placeholder='Email'
                     style={styles.textInput}
                 />
+                {(errorEmail && !errorPassword) && <Text style={styles.error}>{errorEmail}</Text>}
                 <TextInput 
                     onChangeText={(text) => setPassword(text)}
                     placeholderTextColor={colors.beigeClaro}
@@ -123,6 +139,7 @@ const SignupScreen = ({ navigation }) => {
                     style={styles.textInput}
                     secureTextEntry
                 />
+                {errorPassword && <Text style={styles.error}>{errorPassword}</Text>}
                 <TextInput 
                     onChangeText={(text) => setConfirmPassword(text)}
                     placeholderTextColor={colors.beigeClaro}
@@ -130,9 +147,34 @@ const SignupScreen = ({ navigation }) => {
                     style={styles.textInput}
                     secureTextEntry
                 />
+                {errorConfirmPassword && <Text style={styles.error}>{errorConfirmPassword}</Text>}
+                
+                <TextInput 
+                    onChangeText={(text) => setFirstName(text)}
+                    placeholderTextColor={colors.beigeClaro}
+                    placeholder='Nombre'
+                    style={styles.textInput}
+                />
+                {errorFirstName && <Text style={styles.error}>{errorFirstName}</Text>}
+                <TextInput 
+                    onChangeText={(text) => setLastName(text)}
+                    placeholderTextColor={colors.beigeClaro}
+                    placeholder='Apellido'
+                    style={styles.textInput}
+                />
+                {errorLastName && <Text style={styles.error}>{errorLastName}</Text>}
+                <TextInput 
+                    onChangeText={(text) => setAddress(text)}
+                    placeholderTextColor={colors.beigeClaro}
+                    placeholder='Dirección'
+                    style={styles.textInput}
+                />
+                {errorAddress && <Text style={styles.error}>{errorAddress}</Text>}
+                
             </View>
             <Pressable style={styles.btn} onPress={onsubmit}>
                 <Text style={styles.btnText}>Crear cuenta</Text>
+                {errorAddUser && <Text style={styles.error}>{errorAddUser}</Text>}
             </Pressable>
             <View style={styles.footTextContainer}>
                 <Text style={styles.footText}>¿Ya tienes cuenta?:</Text>
@@ -140,7 +182,7 @@ const SignupScreen = ({ navigation }) => {
                     <Text style={styles.footTextColor}>Iniciar sesión</Text>
                 </Pressable>
             </View>
-            <Toast />
+            
             
         </>
     );
@@ -206,4 +248,7 @@ const styles = StyleSheet.create({
         color: colors.rojo,
         textDecorationLine: 'underline'
     },
+    error: {
+        color: colors.rojo
+    }
 });

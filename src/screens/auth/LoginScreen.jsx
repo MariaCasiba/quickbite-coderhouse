@@ -8,8 +8,7 @@ import { useGetUserProfileQuery } from '../../services/userService';
 import Header from '../../components/Header';
 import  Icon from 'react-native-vector-icons/MaterialIcons';
 import { insertSession, clearSessions } from '../../db';
-import Toast from 'react-native-toast-message';
-
+import { loginSchema } from '../../validations/validationSchema';
 
 const textInputWidth = Dimensions.get('window').width * 0.7
 
@@ -17,6 +16,12 @@ const LoginScreen = ({navigation}) => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
+    const [errorEmail, setErrorEmail] = useState("")
+    const [errorPassword, setErrorPassword] = useState("")
+    const [genericValidationError, setGenericValidationError] = useState("")
+    const [errorLoginUser, setErrorLoginUser] = useState("")
+
 
     const [rememberMe, setRememberMe] = useState(false)
 
@@ -33,8 +38,7 @@ const LoginScreen = ({navigation}) => {
             if (result.isSuccess) {
 
             const { localId, email, idToken } = result.data
-
-            
+        
             if (userProfileData) {
 
                 dispatch(setUser({
@@ -65,21 +69,39 @@ const LoginScreen = ({navigation}) => {
                 )}
         
             }
+
+
         
         if (result.isError) {
             console.log("Error al iniciar sesión", result?.error?.data?.error);
-            Toast.show({
-                type: 'error',
-                position: 'bottom',
-                text1: 'Error al iniciar sesión',
-                text2: 'Correo electrónico o contraseña incorrectos. Intenta nuevamente.',
-            });
+            setErrorLoginUser("Error en el email o contraseña. Intente nuevamente")
+
         }
     }, [result, rememberMe, userProfileData]);
 
 
     const onsubmit = ()=>{
-        triggerLogin({email,password})
+
+        try {
+            loginSchema.validateSync({ email, password });
+            setErrorEmail("");
+            setErrorPassword("");
+            triggerLogin({email,password})
+
+        } catch (error) {
+            switch (error.path) {
+                case "email":
+                    setErrorEmail(error.message)
+                    break
+                case "password":
+                    setErrorPassword(error.message)
+                    break
+                default:
+                    setGenericValidationError(error.message)
+                    break
+            }
+        }
+        
     }
 
     
@@ -94,6 +116,7 @@ const LoginScreen = ({navigation}) => {
                     placeholder="Email"
                     style={styles.textInput}
                 />
+                {errorEmail && <Text style={styles.error}>{errorEmail}</Text>}
                 <TextInput
                     onChangeText={(text) => setPassword(text)}
                     placeholderTextColor={colors.beigeClaro}
@@ -101,10 +124,10 @@ const LoginScreen = ({navigation}) => {
                     style={styles.textInput}
                     secureTextEntry
                 />
-
+                {errorPassword && <Text style={styles.error}>{errorPassword}</Text>}
 
             <Pressable style={styles.btn} onPress={onsubmit}><Text style={styles.btnText}>Iniciar sesión</Text></Pressable>
-
+            {errorLoginUser && <Text style={styles.error}>{errorLoginUser}</Text>}
             </View>
             <View style={styles.rememberMeContainer}>
                 <Text style={styles.rememberMeText}>Mantener la sesión iniciada</Text>
@@ -129,7 +152,7 @@ const LoginScreen = ({navigation}) => {
                     <Text style={styles.footTextColor}>Entrar</Text>
                 </Pressable>
             </View>
-            <Toast />
+            
         </>
 
     )
@@ -211,6 +234,9 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         marginHorizontal: 20,
         paddingHorizontal: 12
+    },
+    error: {
+        color: colors.rojo
     }
 })
 
